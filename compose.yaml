@@ -1,9 +1,26 @@
+version: '3'
 services:
-  postgres:
-    image: 'postgres:latest'
+  db:
+    image: postgres:latest
     environment:
-      - 'POSTGRES_DB=mydb'
-      - 'POSTGRES_PASSWORD=#XzASrFDs@'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: XzASrFDs@
     ports:
-      - '5432'
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: XzASrFDs@
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+volumes:
+  db-data:

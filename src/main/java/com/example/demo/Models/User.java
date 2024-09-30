@@ -2,8 +2,10 @@ package com.example.demo.Models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
-import org.hibernate.annotations.GenericGenerator;
+
+
+
+import java.util.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -12,8 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public abstract class User {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID userId;
 
     @Column(name = "external_id", nullable = false, unique = true)
