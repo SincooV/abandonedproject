@@ -14,8 +14,8 @@ public class JobSeeker extends User {
 
     public JobSeeker() {}
 
-    public JobSeeker(String name, String email, String username, Long externalId, String resume) {
-        super(name, email, username, externalId);
+    public JobSeeker(String name, String email, String username, Long externalId, String resume, String password) {
+        super(name, email, username, externalId, password);
         this.resume = resume;
     }
 

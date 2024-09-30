@@ -1,14 +1,14 @@
 package com.example.demo.Controllers;
 
-import com.example.demo.Models.Recruiter;
+
 import com.example.demo.Models.User;
-import com.example.demo.Repos.RecruiterRepository;
+
 import com.example.demo.Repos.UserRepository;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.Services.RecruiterService;
+
 import java.util.List;
 import java.util.UUID;
 

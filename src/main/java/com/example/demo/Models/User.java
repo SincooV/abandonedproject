@@ -2,25 +2,11 @@ package com.example.demo.Models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.hibernate.annotations.GenericGenerator;
-
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "userType"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = JobSeeker.class, name = "JobSeeker"),
-        @JsonSubTypes.Type(value = Recruiter.class, name = "Recruiter")
-})
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type")
 @Entity
 @Table(name = "app_user")
 public abstract class User {
@@ -45,17 +31,20 @@ public abstract class User {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     public User() {
         this.createdAt = LocalDateTime.now();
-
     }
 
-    public User(String name, String email, String username, Long externalId) {
+    public User(String name, String email, String username, Long externalId, String password) {
         this.name = name;
         this.email = email;
         this.username = username;
-        this.createdAt = LocalDateTime.now();
         this.externalId = externalId;
+        this.createdAt = LocalDateTime.now();
+        this.setPassword(password); // Garante que a senha seja hashed
     }
 
     // Getters e Setters
@@ -68,7 +57,7 @@ public abstract class User {
     }
 
     public Long getExternalId() {
-        return externalId; // Altera para UUID
+        return externalId;
     }
 
     public void setExternalId(Long externalId) {
@@ -105,5 +94,14 @@ public abstract class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
     }
 }
